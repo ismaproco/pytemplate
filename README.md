@@ -41,3 +41,7 @@ but can also combine them and create more complex templates
 [docs]
 [views]
 ```
+
+you can check the template.tf file included in the repository for a real case mid-complex template.
+
+by: @ismapro
