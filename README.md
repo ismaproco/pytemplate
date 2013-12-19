@@ -44,4 +44,5 @@ but can also combine them and create more complex templates
 
 you can check the template.tf file included in the repository for a real case mid-complex template.
 
-by: @ismapro
+web: [1]: http://ismapro.com/  "ismapro.com"
+twitter: [2]: http://twitter.com/ismapro  "@ismapro"
