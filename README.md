@@ -10,7 +10,7 @@ pytemplate.py mytemplate.tf
 ```
 or 
 ```
-pytemplate.py mytemplate.tf
+pytemplate.py mytemplate
 ```
 
 ==========
