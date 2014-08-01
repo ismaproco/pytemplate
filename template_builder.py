@@ -1,14 +1,13 @@
 import os,sys,string
 from path_tree import PathTree
 
-
+#Main class to build the template
 class TemplateBuilder:
     
     """docstring for PyTemplate"""
     def __init__(self, text):
         
         self.text = text
-
 
         # Variable initilization for the file parsing
         word_dictionary = []
@@ -116,14 +115,6 @@ class TemplateBuilder:
     """ Return a string of the templating object """
     def __str__(self):
         return str(self.identifier) + " " + self.creation_type + " " + self.name + " " + self.path
-
-    """ Set the execution state based on the operation """
-    def manage_state(word,operation):
-        if operation == "append":
-            type_state.append(word)
-        elif operation == "pop" :
-            type_state.pop()
-
 
     """ Return a string of the path array """
     def build_path(self,path):
