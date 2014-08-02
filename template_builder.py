@@ -5,7 +5,7 @@ from path_tree import PathTree
 class TemplateBuilder:
     
     """docstring for PyTemplate"""
-    def __init__(self, text):
+    def __init__(self, text, destination ):
         
         self.text = text
 
@@ -64,8 +64,10 @@ class TemplateBuilder:
             if break_word:
                 #build the path tree for the word
                 path_tree = self.add_word_pathtree( word, type_state, path, identifier )
-                # append the object to the dictionary of words
+                
+                #is a valid path_tree?
                 if path_tree:
+                    # append the object to the dictionary of words
                     word_dictionary.append(path_tree);
                 #clear the word
                 word = ""
@@ -97,11 +99,21 @@ class TemplateBuilder:
         for f in word_dictionary:
             #is a folder?
             if f.creation_type == "folder":
-                final_path = os.path.dirname(os.path.abspath(__file__)) +"\\"+ f.path
-                if not os.path.exists(f.path):os.makedirs(final_path)
+                #custom destionation specified?
+                if destination == "": # no
+                    final_path = os.path.dirname(os.path.abspath(__file__)) +"\\"+ f.path
+                else: # yes
+                    final_path = destination +"\\"+ f.path
+
+                #path exists?
+                if not os.path.exists(final_path) : os.makedirs(final_path)
+
             #is a file?
             if f.creation_type == "file":
-                open(f.path,"w+")
+                if destination == "": # no
+                    open(f.path,"w+")
+                else:
+                    open(destination+"\\"+f.path,"w+")
 
     """ Return a string of the templating object """
     def __str__(self):
