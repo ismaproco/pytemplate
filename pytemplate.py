@@ -1,8 +1,7 @@
 import os,sys,string
 from template_builder import TemplateBuilder
 
-
-#Read the incoming file
+#Read the incoming file from the argument
 file_name =  ""
 if sys.argv[1] == "":
     file_name = "template.tf"
