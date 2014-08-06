@@ -61,9 +61,7 @@ class TemplateBuilder:
 
             # The chatacter is a Token?
             if not reading_variable:
-                if  general_tokens.count(c) > 0 
-                    or open_tokens.count(c) > 0 
-                    or close_tokens.count(c) > 0:
+                if  general_tokens.count(c) > 0 or open_tokens.count(c) > 0 or close_tokens.count(c) > 0:
 
                     reading_token = True
                     break_word = True
@@ -87,7 +85,7 @@ class TemplateBuilder:
             else:
                 if break_variable:
                     variable_name = word.strip()
-                else if break_text == 2:
+                elif break_text == 2:
                     variables[variable_name] = word.strip()
 
             # Check the open tokens
@@ -122,11 +120,11 @@ class TemplateBuilder:
                 if not reading_token and type_state[-1] != "none":
                     word += c
             else:
-                if not "=" and not "\"":
+                if not c == "=" and not c == "\"":
                     word += c
-                else if "=":
+                elif c == "=":
                     break_variable = True
-                else if "\"":
+                elif c == "\"":
                     break_variable = False
                     break_text +=1
 
