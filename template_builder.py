@@ -50,46 +50,86 @@ class TemplateBuilder:
         
         pop_folder = False
 
+        variables = {}
+        reading_variable = False
+        variable_name = ""
+        break_text = 0
+        break_variable = False
+
         # loop through the text
         for c in self.text:
 
             # The chatacter is a Token?
-            if  general_tokens.count(c) > 0 or open_tokens.count(c) > 0 or close_tokens.count(c) > 0:
-                reading_token = True
-                break_word = True
-            else:
-                reading_token = False
+            if not reading_variable:
+                if  general_tokens.count(c) > 0 
+                    or open_tokens.count(c) > 0 
+                    or close_tokens.count(c) > 0:
+
+                    reading_token = True
+                    break_word = True
+                else:
+                    reading_token = False
 
             # is a word to add?
-            if break_word:
-                #build the path tree for the word
-                path_tree = self.add_word_pathtree( word, type_state, path, identifier )
-                
-                #is a valid path_tree?
-                if path_tree:
-                    # append the object to the dictionary of words
-                    word_dictionary.append(path_tree);
-                #clear the word
-                word = ""
-                #increment the identifier
-                identifier += 1
+            if not reading_variable:
+                if break_word:
+                    #build the path tree for the word
+                    path_tree = self.add_word_pathtree( word, type_state, path, identifier )
+                    
+                    #is a valid path_tree?
+                    if path_tree:
+                        # append the object to the dictionary of words
+                        word_dictionary.append(path_tree);
+                    #clear the word
+                    word = ""
+                    #increment the identifier
+                    identifier += 1
+            else:
+                if break_variable:
+                    variable_name = word.strip()
+                else if break_text == 2:
+                    variables[variable_name] = word.strip()
 
             # Check the open tokens
             if c == "[":
                 type_state.append("folder")
             elif c == "{":
                 type_state.append("file")
+            elif c == "@":
+                type_state.append("variable")
 
-            # Check the closing tokens
-            if c == "]":
-                type_state.pop()
-                path.pop()
-            elif c == "}":
-                type_state.pop()
 
-            # is not a breaking token, add char to the string
-            if not reading_token and type_state[-1] != "none":
-                word += c
+            #if last state is "variable"
+                #read the chars until an = is find
+                # if an equals is found start reading until a double quotes is found
+                # start reading the string
+                # end reading the string until the next double quote
+
+            #get the last element of the list
+            if type_state[-len(type_state)] == 'variable':
+                reading_variable = True
+            else:
+                # Check the closing tokens
+                if c == "]":
+                    type_state.pop()
+                    path.pop()
+                elif c == "}":
+                    type_state.pop()
+
+            #is not reading variable
+            if not reading_variable:
+                # is not a breaking token, add char to the string
+                if not reading_token and type_state[-1] != "none":
+                    word += c
+            else:
+                if not "=" and not "\"":
+                    word += c
+                else if "=":
+                    break_variable = True
+                else if "\"":
+                    break_variable = False
+                    break_text +=1
+
             
             #clear the current status
             reading_token = False
